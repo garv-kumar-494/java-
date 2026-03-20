@@ -1,0 +1,162 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Simple Form</title>
+    <style>
+        body {
+            font-family: Arial;
+            background: #f2f2f2;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .form-box {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.2);
+            width: 300px;
+        }
+
+        input {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+        }
+
+        button {
+            width: 100%;
+            padding: 10px;
+            background: green;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background: darkgreen;
+        }
+    </style>
+</head>
+<body>
+
+<div class="form-box">
+    <h2>User Form</h2>
+
+    <input type="text" id="name" placeholder="Enter Name">
+    <input type="email" id="email" placeholder="Enter Email">
+    <input type="password" id="password" placeholder="Enter password">
+<div>
+    <button onclick="saveUser()">Submit</button>
+</div>
+<br>
+    <div>
+        <button onclick="deleteUser()">Delete</button>
+    </div>
+<br>
+    <div>
+        <button onclick="updateUser()">Update</button>
+    </div>
+    <br>
+    <h3>All Users</h3>
+    <div id="usersList"></div>
+    <br>
+    <button onclick="loadUsers()">Show All Users</button>
+</div>
+
+<script>
+    function saveUser() {
+        const name = document.getElementById("name").value;
+        const email = document.getElementById("email").value;
+        const password = document.getElementById("password").value;
+
+        fetch("http://localhost:8080/api/save", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                name: name,
+                email: email,
+                password: password
+            })
+        })
+            .then(res => res.json())
+            .then(data => {
+                alert("Saved Successfully!");
+            })
+            .catch(err => {
+                alert("Error saving user");
+            });
+    }
+
+    function deleteUser() {
+        const name = document.getElementById("name").value;
+
+        fetch("http://localhost:8080/api/delete/" + name, {
+            method: "DELETE",
+        })
+            .then(res => res.json())
+            .then(data => {
+                alert("delete Successfully!");
+            })
+    }
+
+
+        function updateUser(){
+
+        const name = document.getElementById("name").value;
+        const email = document.getElementById("email").value;
+        const password = document.getElementById("password").value;
+
+        fetch("http://localhost:8080/api/update/" + email,{
+        method: "PUT",
+        headers: {
+        "Content-Type": "application/json"
+    },
+        body: JSON.stringify({
+        name: name,
+        email: email,
+        password: password
+    })
+    })
+        .then(res => res.text())
+        .then(data => {
+        alert("updated Successfully!");
+    })
+        .catch(err => {
+        alert("Error updating user");
+    });
+    }
+
+    function loadUsers(){
+        fetch("http://localhost:8080/api/getUsers")
+            .then(res => res.json())
+            .then(data => {
+
+                let output = "";
+
+                data.forEach(user => {
+                    output += `
+                <div style="border:1px solid black; padding:10px; margin:5px;">
+                    <p><b>Name:</b> ${user.name}</p>
+                    <p><b>Email:</b> ${user.email}</p>
+                    <p><b>Password:</b> ${user.password}</p>
+                </div>
+            `;
+                });
+
+                document.getElementById("usersList").innerHTML = output;
+            })
+            .catch(err => {
+                alert("Error loading users");
+            });
+    }
+</script>
+
+
+</body>
+</html>
