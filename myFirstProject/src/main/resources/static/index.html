@@ -73,7 +73,7 @@
         const email = document.getElementById("email").value;
         const password = document.getElementById("password").value;
 
-        fetch("http://localhost:8080/api/save", {
+        fetch("https://java-1-orfr.onrender.com/api/save", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json"
@@ -96,7 +96,7 @@
     function deleteUser() {
         const name = document.getElementById("name").value;
 
-        fetch("http://localhost:8080/api/delete/" + name, {
+        fetch("https://java-1-orfr.onrender.com/api/delete/" + name, {
             method: "DELETE",
         })
             .then(res => res.json())
@@ -112,7 +112,7 @@
         const email = document.getElementById("email").value;
         const password = document.getElementById("password").value;
 
-        fetch("http://localhost:8080/api/update/" + email,{
+        fetch("https://java-1-orfr.onrender.com/api/update/" + email,{
         method: "PUT",
         headers: {
         "Content-Type": "application/json"
@@ -133,7 +133,7 @@
     }
 
     function loadUsers(){
-        fetch("http://localhost:8080/api/getUsers")
+        fetch("/api/getUsers")
             .then(res => res.json())
             .then(data => {
 
