@@ -4,6 +4,8 @@ WORKDIR /app
 
 COPY myFirstProject .
 
+RUN chmod +x mvnw
+
 RUN ./mvnw clean package -DskipTests
 
 CMD ["java", "-jar", "target/*.jar"]
